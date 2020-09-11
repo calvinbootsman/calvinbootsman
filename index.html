@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock Paper Scissor!</title>
+    <link rel="stylesheet" href="mystyle.css">
+</head>
+
+<body>
+    <div class="HeaderDiv">
+        <h1>Rock Paper Scissor!</h1>
+    </div>
+
+
+    <div class="SelectDiv">
+        <div class="CenterDiv">
+            <img id="RockImg" style="left: 0px;" src="./Images/Rock.png" onclick="PlayGame('Rock')" />
+            <img id="PaperImg" style="left: 0px;" src="./Images/Paper.png" onclick="PlayGame('Paper')" />
+            <img id="ScissorImg" style="left: 0px;" src="./Images/Scissor.png" onclick="PlayGame('Scissor')" />
+            <img id="OutputImg" style="left: 0px; visibility: hidden;" src="./Images/Scissor.png" />
+            <h2 id="WinCounter">Wins: 0/3</h2>
+            <h3>To win, you need to win three times in a row!</h3>
+            <button id="ResetBtn" style="visibility: hidden;" onclick="ResetEverything()">Another round!</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    var order = [1, 1, 0, 2, 2, 2, 0, 1, 2, 1, 2, 0, 2, 2, 1, 1, 2, 0, 0, 2, 1, 2, 0, 2];
+    var opacity = 1;
+    var winnings = 0;
+    var counter = 0;
+    var running = false;
+
+    function PlayGame(chosen) {
+        if (counter >= order.length) {
+            window.alert("Ha we're just fucking with you <3!")
+            document.body.style.font = "Arial";
+            document.body.style.fontSize = "72px";
+            document.body.style.marginTop = "0px";
+            document.body.innerHTML = "<a href=\"https://google.com\">Click here!</a>";
+
+        } else {
+            if (running == false) {
+                AnimateDisappearance(chosen);
+                running = true;
+            }
+        }
+    }
+
+    function ChooseFunction(chosen) {
+        var output;
+
+        var win = order[counter]; //0 =  tie;  1 = win;  2 = lose
+        counter++;
+
+        switch (chosen) {
+            case 'Rock':
+                if (win == 0) output = "Rock";
+                if (win == 1) output = "Scissor";
+                if (win == 2) output = "Paper";
+
+                break;
+            case 'Paper':
+                if (win == 1) output = "Rock";
+                if (win == 2) output = "Scissor";
+                if (win == 0) output = "Paper";
+                break;
+            case 'Scissor':
+                if (win == 2) output = "Rock";
+                if (win == 0) output = "Scissor";
+                if (win == 1) output = "Paper";
+                break;
+        }
+        if (win == 1) winnings++;
+        else winnings = 0;
+        document.getElementById("WinCounter").innerText = "Wins: " + winnings + "/3";
+
+        return output;
+    }
+
+    function AnimateDisappearance(chosen) {
+        var animationDisappear = setInterval(Disappear, 10);
+        var animationRight;
+        var animationOutput;
+        // if (opacity == 0) clearInterval(animation);
+        console.log(chosen);
+
+        function Disappear() {
+            if (chosen != "Rock") document.getElementById("RockImg").style.opacity = (opacity);
+            if (chosen != "Paper") document.getElementById("PaperImg").style.opacity = (opacity);
+            if (chosen != "Scissor") document.getElementById("ScissorImg").style.opacity = (opacity);
+            opacity -= 0.05;
+            // console.log(opacity);
+            if (opacity < 0) {
+                console.log("yo");
+                animationRight = setInterval(RightPosition, 3);
+                clearInterval(animationDisappear);
+
+            }
+        }
+
+        function RightPosition() {
+            console.log("test");
+            var offset;
+            if (chosen == "Paper") offset = -150;
+            if (chosen == "Scissor") offset = -300;
+            if (chosen == "Rock") clearInterval(animationRight);
+
+            var positionstr = document.getElementById(chosen + "Img").style.left;
+            var position = positionstr.substring(0, positionstr.length - 2);
+            console.log("position string: " + positionstr);
+            console.log("position: " + position);
+
+            if (position > offset) {
+                document.getElementById(chosen + "Img").style.left = (position - 3) + "px";
+                console.log(position);
+            } else {
+                console.log('ended');
+                ShowOutput();
+                clearInterval(animationRight);
+            }
+
+        }
+
+        function ShowOutput() {
+            document.getElementById("OutputImg").style.left = "-150px";
+            document.getElementById("OutputImg").src = "./Images/" + ChooseFunction(chosen) + ".png";
+            document.getElementById("OutputImg").style.visibility = "visible";
+            document.getElementById("ResetBtn").style.visibility = "visible";
+            running = false;
+        }
+    }
+
+    function ResetEverything() {
+        document.getElementById("OutputImg").style.left = "0px";
+        document.getElementById("OutputImg").style.visibility = "hidden";
+        document.getElementById("PaperImg").style.left = 0;
+        document.getElementById("ScissorImg").style.left = 0;
+        document.getElementById("RockImg").style.opacity = 1;
+        document.getElementById("PaperImg").style.opacity = 1;
+        document.getElementById("ScissorImg").style.opacity = 1;
+        document.getElementById("ResetBtn").style.visibility = "hidden";
+    }
+</script>
