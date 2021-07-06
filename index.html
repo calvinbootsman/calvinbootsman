@@ -1,147 +1,126 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>Rock Paper Scissor!</title>
-    <link rel="stylesheet" href="mystyle.css">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
 </head>
 
 <body>
-    <div class="HeaderDiv">
-        <h1>Rock Paper Scissor!</h1>
-    </div>
+    <!--First round-->
+    <div class="card text-center mt-5 position-absolute top-10 start-50 translate-middle-x" id="FirstRoundDiv"
+        style="width: 40rem;">
+        <div class="card-header bg-dark text-light">
+            <h1 id="Question-card">Pannekoekenschip</h1>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">Click the correct translation.</h4>
+            <div class="btn-group-vertical mt-3 mb-3" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary" id="btnlbl1" for="btnradio1">This is answer number 1</label>
 
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-secondary" id="btnlbl2" for="btnradio2">This is answer number 2</label>
 
-    <div class="SelectDiv">
-        <div class="CenterDiv">
-            <img id="RockImg" style="left: 0px;" src="./Images/Rock.png" onclick="PlayGame('Rock')" />
-            <img id="PaperImg" style="left: 0px;" src="./Images/Paper.png" onclick="PlayGame('Paper')" />
-            <img id="ScissorImg" style="left: 0px;" src="./Images/Scissor.png" onclick="PlayGame('Scissor')" />
-            <img id="OutputImg" style="left: 0px; visibility: hidden;" src="./Images/Scissor.png" />
-            <h2 id="WinCounter">Wins: 0/3</h2>
-            <h3>To win, you need to win three times in a row!</h3>
-            <button id="ResetBtn" style="visibility: hidden;" onclick="ResetEverything()">Another round!</button>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-secondary" id="btnlbl3" for="btnradio3">This is answer number 3</label>
+            </div><br>
+            <a onclick="FirstRound()" class="btn btn-secondary">check answer</a>
         </div>
     </div>
+    
+    <!--Second round-->
+    <img src="karate.gif" alt="this slowpoke moves"  id="karateRound" width="250" hidden=true;/>
 
+    <!--Third round-->
+    <div class="card text-center mt-5 position-absolute top-10 start-50 translate-middle-x" id="ThirdRoundDiv"
+        style="width: 24rem;" hidden=true;>
+        <div class="card-header bg-dark text-light">
+            <h1 id="GuessTheLineHeader">Guess the LINE!</h1>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">When the sun shines, we shine together.</h4>
+            <label>artist name: </label>
+            <input class="mt-3 mb-3" id="ArtistInput" type="text">
+
+            <a onclick="ThirdRound()" class="btn btn-secondary">check answer</a>
+        </div>
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
 </body>
-
-</html>
 <script>
-    var order = [1, 1, 0, 2, 2, 2, 0, 1, 2, 1, 2, 0, 2, 2, 1, 1, 2, 0, 0, 2, 1, 2, 0, 2];
-    var opacity = 1;
-    var winnings = 0;
-    var counter = 0;
-    var running = false;
+    var question = 0;
+    var answers = [["question 1", "answer 1", "answer 2", "answer 3", 2],
+    ["question 2", "answer 4", "answer 5", "answer 6", 3],
+    ["question 3", "answer 7", "answer 8", "answer 9", 1],
+    ["question 4", "answer 10", "answer 11", "answer 12", 3]];
 
-    function PlayGame(chosen) {
-        if (counter >= order.length) {
-            window.alert("Ha we're just fucking with you <3!")
-            document.body.style.font = "Arial";
-            document.body.style.fontSize = "72px";
-            document.body.style.marginTop = "0px";
-            document.body.innerHTML = "<a href=\"https://youtu.be/SBzf9m11JVc\">Click here!</a>";
+    var getLine = 0;
+    var lineAndAnswer = [["Line 1", "Artist 1"], ["Line 2", "Artist 2"], ["Line 3", "Artist 3"]];
+    setQuestions();
 
+    function FirstRound() {
+        var givenAnswer;
+        var r1 = document.getElementById("btnradio1");
+        var r2 = document.getElementById("btnradio2");
+        var r3 = document.getElementById("btnradio3");
+        if (r1.checked == true) givenAnswer = 1;
+        if (r2.checked == true) givenAnswer = 2;
+        if (r3.checked == true) givenAnswer = 3;
+
+        if (givenAnswer == answers[question][4]) {
+            r1.classList += "btn btn-success";
+            alert("Correct!")
+        }
+
+        else {
+            alert("Incorrect :(");
+        }
+
+        question++;
+        setQuestions();
+    }
+
+    function setQuestions() {
+        if (question < 2) {
+            document.getElementById("Question-card").innerText = answers[question][0];
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById("btnlbl" + i).innerText = answers[question][i];
+            }
+        }
+        else {
+            document.getElementById("FirstRoundDiv").hidden = true;
+            document.getElementById("karateRound").hidden = false;
+        }
+    }
+
+    function ThirdRound() {
+        if (document.getElementById("ArtistInput").value == lineAndAnswer[getLine][1]) {
+            alert("Correct!");
         } else {
-            if (running == false) {
-                AnimateDisappearance(chosen);
-                running = true;
-            }
+            alert("Incorrect :(");
         }
-    }
-
-    function ChooseFunction(chosen) {
-        var output;
-
-        var win = order[counter]; //0 =  tie;  1 = win;  2 = lose
-        counter++;
-
-        switch (chosen) {
-            case 'Rock':
-                if (win == 0) output = "Rock";
-                if (win == 1) output = "Scissor";
-                if (win == 2) output = "Paper";
-
-                break;
-            case 'Paper':
-                if (win == 1) output = "Rock";
-                if (win == 2) output = "Scissor";
-                if (win == 0) output = "Paper";
-                break;
-            case 'Scissor':
-                if (win == 2) output = "Rock";
-                if (win == 0) output = "Scissor";
-                if (win == 1) output = "Paper";
-                break;
-        }
-        if (win == 1) winnings++;
-        else winnings = 0;
-        document.getElementById("WinCounter").innerText = "Wins: " + winnings + "/3";
-
-        return output;
-    }
-
-    function AnimateDisappearance(chosen) {
-        var animationDisappear = setInterval(Disappear, 10);
-        var animationRight;
-        var animationOutput;
-        // if (opacity == 0) clearInterval(animation);
-        console.log(chosen);
-
-        function Disappear() {
-            if (chosen != "Rock") document.getElementById("RockImg").style.opacity = (opacity);
-            if (chosen != "Paper") document.getElementById("PaperImg").style.opacity = (opacity);
-            if (chosen != "Scissor") document.getElementById("ScissorImg").style.opacity = (opacity);
-            opacity -= 0.05;
-            // console.log(opacity);
-            if (opacity < 0) {
-                console.log("yo");
-                animationRight = setInterval(RightPosition, 3);
-                clearInterval(animationDisappear);
-
-            }
-        }
-
-        function RightPosition() {
-            console.log("test");
-            var offset;
-            if (chosen == "Paper") offset = -150;
-            if (chosen == "Scissor") offset = -300;
-            if (chosen == "Rock") clearInterval(animationRight);
-
-            var positionstr = document.getElementById(chosen + "Img").style.left;
-            var position = positionstr.substring(0, positionstr.length - 2);
-            console.log("position string: " + positionstr);
-            console.log("position: " + position);
-
-            if (position > offset) {
-                document.getElementById(chosen + "Img").style.left = (position - 3) + "px";
-                console.log(position);
-            } else {
-                console.log('ended');
-                ShowOutput();
-                clearInterval(animationRight);
-            }
-
-        }
-
-        function ShowOutput() {
-            document.getElementById("OutputImg").style.left = "-150px";
-            document.getElementById("OutputImg").src = "./Images/" + ChooseFunction(chosen) + ".png";
-            document.getElementById("OutputImg").style.visibility = "visible";
-            document.getElementById("ResetBtn").style.visibility = "visible";
-            running = false;
-        }
-    }
-
-    function ResetEverything() {
-        document.getElementById("OutputImg").style.left = "0px";
-        document.getElementById("OutputImg").style.visibility = "hidden";
-        document.getElementById("PaperImg").style.left = 0;
-        document.getElementById("ScissorImg").style.left = 0;
-        document.getElementById("RockImg").style.opacity = 1;
-        document.getElementById("PaperImg").style.opacity = 1;
-        document.getElementById("ScissorImg").style.opacity = 1;
-        document.getElementById("ResetBtn").style.visibility = "hidden";
+        getLine++;
+        document.getElementById("ArtistInput").value = "";
     }
 </script>
+
+</html>
